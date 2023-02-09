@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000
 app.use(express.json())
 
 let videos: any[] = []
-const resolutions = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440"]
+const resolutions = ["P144", "P240", "P360", "P480", "P720", "P1080"]
 let error: { errorsMessages: any[] } = {errorsMessages: []}
 
 app.get('/videos', (req: Request, res: Response ) => {
