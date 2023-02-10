@@ -1,5 +1,7 @@
-import {Request, Response, Router} from "express";
-
+import {NextFunction, Request, Response, Router} from "express";
+import {body, header, validationResult} from "express-validator";
+import {authorizationMiddleware} from "./authorization";
+export const blogsRouter = Router({})
 
 let blogs: any[] = [{
     "id": 1,
@@ -11,13 +13,17 @@ let blogs: any[] = [{
 const resolutions = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"]
 let error: { errorsMessages: any[] } = {errorsMessages: []}
 
-export const blogsRouter = Router({})
 
-blogsRouter.get('/blogs', (req: Request, res: Response ) => {
+
+
+blogsRouter.get('/blogs',
+    (req: Request, res: Response ) => {
     res.status(200).send(blogs)
 })
 
-blogsRouter.post('/blogs', (req: Request, res: Response ) => {
+blogsRouter.post('/blogs',
+    authorizationMiddleware,
+    (req: Request, res: Response ) => {
 
     let elemRes = req.body.availableResolutions
     const hasAllElems = elemRes.every( (elem:any) => resolutions.includes(elem) )

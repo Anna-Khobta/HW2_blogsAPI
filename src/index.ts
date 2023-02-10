@@ -1,4 +1,4 @@
-import express, {Request, Response} from 'express'
+import express, {NextFunction, Request, Response} from 'express'
 
 import {blogsRouter} from "./routers/blogs-router";
 
@@ -7,6 +7,8 @@ const app = express()
 const port = process.env.PORT || 3000
 
 app.use(express.json())
+
+
 
 app.use('/', blogsRouter)
 
