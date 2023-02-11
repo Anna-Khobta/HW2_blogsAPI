@@ -15,11 +15,17 @@ const resolutions = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "
 
 
 
-const nameValidation = body('name').trim().not().isEmpty().withMessage("The name is empty").isLength({max:5}).withMessage("The length maximum is 15")
+const nameValidation = body('name')
+    .trim().not().isEmpty().withMessage("The name is empty")
+    .isLength({max:15}).withMessage("The maximum length  is 15")
 
-const descriptionValidation = body('description').trim().not().isEmpty().withMessage("The description is empty").isLength({max:500}).withMessage("The length maximum is 500")
+const descriptionValidation = body('description')
+    .trim().not().isEmpty().withMessage("The description is empty")
+    .isLength({max:500}).withMessage("The maximum length is 500")
 
-const websiteUrlValidation = body('websiteUrl').trim().not().isEmpty().withMessage("The websiteUrl is empty").isLength({min:5, max: 50}).withMessage("The length min is 5, max 50")
+const websiteUrlValidation = body('websiteUrl')
+    .isLength({max: 100}).withMessage("The maximum length is 100")
+    .isURL().withMessage("A URL is badly formed or contains invalid characters")
 
 
 
@@ -48,132 +54,43 @@ blogsRouter.post('/blogs',
     }
 )
 
-
-    /*let elemRes = req.body.availableResolutions
-    const hasAllElems = elemRes.every( (elem:any) => resolutions.includes(elem) )
-
-    if (error.errorsMessages.length > 0) {
-        error.errorsMessages.splice(0, error.errorsMessages.length)
-    }
-    if (!req.body.title || req.body.title.length > 40 ) {
-        error.errorsMessages.push({
-            "message": "The title is wrong.",
-            "field": "title"
-        })
-    }
-    if (!req.body.author || req.body.author.length > 20) {
-        error.errorsMessages.push({
-            "message": "The author is wrong.",
-            "field": "author"
-        })
-    }
-    if (hasAllElems === false) {
-        error.errorsMessages.push({
-            "message": "The availableResolutions is wrong.",
-            "field": "availableResolutions"
-        })
-    }
-
-    if (error.errorsMessages.length > 0)
-        return res.status(400).send(error)
-
-    else {
-        const newlyCreatedVideo = {
-            id: +(new Date()),
-            title: req.body.title,
-            author: req.body.author,
-            canBeDownloaded: false,
-            minAgeRestriction: null,
-            createdAt: (new Date().toISOString()),
-            publicationDate: (new Date(new Date().setDate(new Date().getDate() + 1)).toISOString()),
-            availableResolutions: req.body.availableResolutions
-        }
-        blogs.push(newlyCreatedVideo)
-        res.status(201).send(newlyCreatedVideo)
-    }
-})
-
 blogsRouter.get('/blogs/:id', (req: Request, res: Response ) => {
 
-    let findVideo = blogs.find(p => p.id === +req.params.id)
+    let findBlog = blogs.find(p => p.id === +req.params.id)
 
-    if (findVideo) {
-        return res.status(200).send(findVideo)
+    if (findBlog) {
+        return res.status(200).send(findBlog)
     } else {
         return res.send(404)
     }
 
 })
 
-blogsRouter.put('/blogs/:id', (req: Request, res:Response) => {
-    let findVideo = blogs.find(p => p.id === +req.params.id)
+blogsRouter.put('/blogs/:id',
+    authorizationMiddleware,
+    nameValidation,
+    descriptionValidation,
+    websiteUrlValidation,
+    inputValidationMiddleware,
+    (req: Request, res:Response) => {
 
-    let elemRes = req.body.availableResolutions
-    const hasAllElems = elemRes.every( (elem:any) => resolutions.includes(elem) );
+        let findBlog = blogs.find(p => p.id === +req.params.id)
 
-    if (error.errorsMessages.length > 0) {
-        error.errorsMessages.splice(0, error.errorsMessages.length)
-    }
+        if (!findBlog) {
+            return res.sendStatus(404)
+        } else {
+            findBlog.id = +req.params.id,
+                findBlog.name = req.body.name,
+                findBlog.description = req.body.description,
+                findBlog.websiteUrl = req.body.websiteUrl
+            blogs.push(findBlog)
+            return res.send(204)
+        }
+    })
 
-    if (findVideo) {
-        if (!req.body.title || req.body.title.length > 40) {
-            error.errorsMessages.push({
-                "message": "The title is wrong",
-                "field": "title"
-            })
-        }
-        if (!req.body.author || req.body.author.length > 20) {
-            error.errorsMessages.push({
-                "message": "The author is wrong.",
-                "field": "author"
-            })
-        }
-        if (hasAllElems === false) {
-            error.errorsMessages.push({
-                "message": "The availableResolutions is wrong.",
-                "field": "availableResolutions"
-            })
-        }
-        if (req.body.minAgeRestriction > 18 || req.body.minAgeRestriction < 1) {
-            error.errorsMessages.push({
-                "message": "The minAgeRestriction is wrong.",
-                "field": "minAgeRestriction"
-            })
-        }
-        if (typeof req.body.canBeDownloaded === 'string') {
-            error.errorsMessages.push({
-                "message": "The canBeDownloaded is wrong.",
-                "field": "canBeDownloaded"
-            })
-        }
-        if (typeof req.body.publicationDate === 'number') {
-            error.errorsMessages.push({
-                "message": "The publicationDate is wrong.",
-                "field": "publicationDate"
-            })
-        }
-        if (error.errorsMessages.length > 0)
-            return res.status(400).send(error)
-
-
-        else {
-            findVideo.id = +req.params.id,
-                findVideo.title = req.body.title,
-                findVideo.author = req.body.author,
-                findVideo.canBeDownloaded = req.body.canBeDownloaded || findVideo.canBeDownloaded,
-                findVideo.minAgeRestriction  = req.body.minAgeRestriction || findVideo.minAgeRestriction,
-                findVideo.createdAt  = findVideo.createdAt || findVideo.minAgeRestriction,
-                findVideo.publicationDate  = req.body.publicationDate || findVideo.publicationDate,
-                findVideo.availableResolutions  = req.body.availableResolutions || findVideo.availableResolutions
-            blogs.push(findVideo)
-            res.sendStatus(204)
-        }
-    }
-    return res.sendStatus(404)
-})
-
-// через find index, delete
-blogsRouter.delete('/blogs/:id', (req: Request, res: Response ) => {
+blogsRouter.delete('/blogs/:id',
+    authorizationMiddleware,
+    (req: Request, res: Response ) => {
     for (let i = 0; i < blogs.length; i++) {
         if (blogs[i].id === +req.params.id) {
             blogs.splice(i, 1);
@@ -183,8 +100,3 @@ blogsRouter.delete('/blogs/:id', (req: Request, res: Response ) => {
     }
     res.send(404)
 })
-
-blogsRouter.delete('/testing/all-data', (req: Request, res: Response ) => {
-    blogs.splice(0, blogs.length)
-    res.send(204)
-})*/
