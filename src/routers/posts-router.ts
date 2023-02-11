@@ -5,17 +5,11 @@ import {authorizationMiddleware} from "../middlewares/authorization";
 import {inputValidationMiddleware} from "../middlewares/input-validation-middleware";
 
 import {blogs, blogsRouter} from "./blogs-router";
+//import {deleteAllRouter} from "./delete-all-routers";
 
 export const postsRouter = Router({})
 
-export let posts: any[] = [ {
-    "id": "2",
-    "title": "testPost",
-    "shortDescription": "string",
-    "content": "string",
-    "blogId": "string",
-    "blogName": "string"
-} ]
+export let posts: any[] = []
 
 
 const titleValidation = body('title')
@@ -149,3 +143,9 @@ postsRouter.delete('/posts/:id',
     res.send(404)
 })
 
+
+postsRouter.delete('/testing/all-data', (req: Request, res: Response ) => {
+    posts.splice(0, posts.length)
+    blogs.splice(0,blogs.length)
+    res.send(204)
+})

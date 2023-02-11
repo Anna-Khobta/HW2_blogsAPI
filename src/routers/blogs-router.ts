@@ -4,13 +4,14 @@ import {authorizationMiddleware} from "../middlewares/authorization";
 import {inputValidationMiddleware} from "../middlewares/input-validation-middleware";
 export const blogsRouter = Router({})
 
-export let blogs: any[] = [{
-    "id": 1,
+export let blogs: any[] = []
+
+
+/*{"id": 1,
     "name": "Anna",
     "description": "something",
     "websiteUrl": "string"
-}]
-
+}*/
 
 const nameValidation = body('name')
     .trim().not().isEmpty().withMessage("The name is empty")

@@ -1,3 +1,4 @@
+/*
 import {Request, Response, Router} from "express";
 import {blogs} from "./blogs-router";
 import {posts} from "./posts-router";
@@ -8,3 +9,4 @@ deleteAllRouter.delete('/testing/all-data', (req: Request, res: Response ) => {
     blogs.splice(0,blogs.length)
     res.send(204)
 })
+*/

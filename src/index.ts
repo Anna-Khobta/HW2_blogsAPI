@@ -2,7 +2,7 @@ import express, {NextFunction, Request, Response} from 'express'
 
 import {blogsRouter} from "./routers/blogs-router";
 import {postsRouter} from "./routers/posts-router";
-import {deleteAllRouter} from "./routers/delete-all-routers";
+//import {deleteAllRouter} from "./routers/delete-all-routers";
 
 // create express app
 const app = express()
@@ -17,7 +17,7 @@ app.get('/', (req: Request, res: Response ) => {
 
 app.use('/', blogsRouter)
 app.use('/', postsRouter)
-app.use('/', deleteAllRouter)
+//app.use('/', deleteAllRouter)
 
 //start app
 app.listen(port, () => {
