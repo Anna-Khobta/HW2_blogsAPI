@@ -1,5 +1,6 @@
 import express, {NextFunction, Request, Response} from 'express'
-
+import * as dotenv from 'dotenv'
+dotenv.config()
 import {blogsRouter} from "./routers/blogs-router";
 import {postsRouter} from "./routers/posts-router";
 import {deleteAllRouter} from "./routers/delete-all-routers";
@@ -11,7 +12,7 @@ const port = process.env.PORT || 3000
 app.use(express.json())
 
 app.get('/', (req: Request, res: Response ) => {
-    let helloMessage = 'Hello Incubator!!!'
+    let helloMessage = 'Hello Incubator11!!!'
     res.send(helloMessage)
 })
 
