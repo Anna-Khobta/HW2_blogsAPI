@@ -7,6 +7,6 @@ export const deleteAllRouter = Router()
 let arr: any[]  = []
 deleteAllRouter.delete('/testing/all-data', (req: Request, res: Response ) => {
     arr = []
-    res.sendStatus(204)
+    res.status(204).send('All data is deleted')
 })
 
