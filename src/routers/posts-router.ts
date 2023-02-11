@@ -143,9 +143,3 @@ postsRouter.delete('/posts/:id',
     res.send(404)
 })
 
-
-postsRouter.delete('/testing/all-data', (req: Request, res: Response ) => {
-    posts.splice(0, posts.length)
-
-    res.send(204)
-})

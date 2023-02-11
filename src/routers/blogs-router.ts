@@ -2,6 +2,9 @@ import {NextFunction, Request, Response, Router} from "express";
 import {body, header, validationResult} from "express-validator";
 import {authorizationMiddleware} from "../middlewares/authorization";
 import {inputValidationMiddleware} from "../middlewares/input-validation-middleware";
+
+import {postsRouter} from "./posts-router";
+
 export const blogsRouter = Router({})
 
 export let blogs: any[] = []
