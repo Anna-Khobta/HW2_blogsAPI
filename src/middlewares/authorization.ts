@@ -1,6 +1,6 @@
 
 import {NextFunction, Request, Response} from "express";
-import {blogsRouter} from "./blogs-router";
+import {blogsRouter} from "../routers/blogs-router";
 
 // authorization
 

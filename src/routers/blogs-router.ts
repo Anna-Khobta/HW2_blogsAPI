@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response, Router} from "express";
 import {body, header, validationResult} from "express-validator";
-import {authorizationMiddleware} from "./authorization";
+import {authorizationMiddleware} from "../middlewares/authorization";
+import {inputValidationMiddleware} from "../middlewares/input-validation-middleware";
 export const blogsRouter = Router({})
 
 let blogs: any[] = [{
@@ -11,8 +12,14 @@ let blogs: any[] = [{
 }]
 
 const resolutions = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"]
-let error: { errorsMessages: any[] } = {errorsMessages: []}
 
+
+
+const nameValidation = body('name').trim().not().isEmpty().withMessage("The name is empty").isLength({max:5}).withMessage("The length maximum is 15")
+
+const descriptionValidation = body('description').trim().not().isEmpty().withMessage("The description is empty").isLength({max:500}).withMessage("The length maximum is 500")
+
+const websiteUrlValidation = body('websiteUrl').trim().not().isEmpty().withMessage("The websiteUrl is empty").isLength({min:5, max: 50}).withMessage("The length min is 5, max 50")
 
 
 
@@ -23,9 +30,26 @@ blogsRouter.get('/blogs',
 
 blogsRouter.post('/blogs',
     authorizationMiddleware,
+    nameValidation,
+    descriptionValidation,
+    websiteUrlValidation,
+    inputValidationMiddleware,
     (req: Request, res: Response ) => {
 
-    let elemRes = req.body.availableResolutions
+        const newBlog = {
+            id: +(new Date()),
+            name: req.body.name,
+            description: req.body.description,
+            websiteUrl: req.body.websiteUrl
+
+        }
+        blogs.push(newBlog)
+        res.status(201).send(newBlog)
+    }
+)
+
+
+    /*let elemRes = req.body.availableResolutions
     const hasAllElems = elemRes.every( (elem:any) => resolutions.includes(elem) )
 
     if (error.errorsMessages.length > 0) {
@@ -163,4 +187,4 @@ blogsRouter.delete('/blogs/:id', (req: Request, res: Response ) => {
 blogsRouter.delete('/testing/all-data', (req: Request, res: Response ) => {
     blogs.splice(0, blogs.length)
     res.send(204)
-})
+})*/
