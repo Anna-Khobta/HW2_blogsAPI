@@ -146,6 +146,6 @@ postsRouter.delete('/posts/:id',
 
 postsRouter.delete('/testing/all-data', (req: Request, res: Response ) => {
     posts.splice(0, posts.length)
-    blogs.splice(0,blogs.length)
+
     res.send(204)
 })
