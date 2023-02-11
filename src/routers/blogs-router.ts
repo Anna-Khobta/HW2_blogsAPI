@@ -4,15 +4,12 @@ import {authorizationMiddleware} from "../middlewares/authorization";
 import {inputValidationMiddleware} from "../middlewares/input-validation-middleware";
 export const blogsRouter = Router({})
 
-let blogs: any[] = [{
+export let blogs: any[] = [{
     "id": 1,
     "name": "Anna",
     "description": "something",
     "websiteUrl": "string"
 }]
-
-const resolutions = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"]
-
 
 
 const nameValidation = body('name')
