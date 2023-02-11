@@ -44,7 +44,7 @@ blogsRouter.post('/blogs',
     (req: Request, res: Response ) => {
 
         const newBlog = {
-            id: +(new Date()),
+            id: (+(new Date())).toString(),
             name: req.body.name,
             description: req.body.description,
             websiteUrl: req.body.websiteUrl

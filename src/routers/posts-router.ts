@@ -68,7 +68,7 @@ postsRouter.post('/posts',
 
         let findBlogID = blogs.find(p => p.id === +(req.body.blogId) ) // вынести отдельно строку? повторяется!
         const newPost = {
-            id: (new Date()).toString(),
+            id: +(new Date()),
             title: req.body.title,
             shortDescription: req.body.shortDescription,
             content: req.body.content,
