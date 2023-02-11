@@ -1,6 +1,7 @@
-import express, {NextFunction, Request, Response} from 'express'
 import * as dotenv from 'dotenv'
 dotenv.config()
+import express, {NextFunction, Request, Response} from 'express'
+
 import {blogsRouter} from "./routers/blogs-router";
 import {postsRouter} from "./routers/posts-router";
 import {deleteAllRouter} from "./routers/delete-all-routers";
