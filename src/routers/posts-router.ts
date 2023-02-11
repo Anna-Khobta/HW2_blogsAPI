@@ -66,7 +66,6 @@ const idContainsValidation = body('blogId')
 postsRouter.post('/posts',
     authorizationMiddleware,
     idValidation,
-    idContainsValidation,
     titleValidation,
     shortDescriptionValidation,
     contentValidation,

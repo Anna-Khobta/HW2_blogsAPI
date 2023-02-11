@@ -17,7 +17,7 @@ app.get('/', (req: Request, res: Response ) => {
 
 app.use('/', blogsRouter)
 app.use('/', postsRouter)
-app.use('/',deleteAllRouter)
+app.use('/', deleteAllRouter)
 
 //start app
 app.listen(port, () => {
