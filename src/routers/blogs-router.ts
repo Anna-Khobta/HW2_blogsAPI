@@ -1,32 +1,12 @@
-import {NextFunction, Request, Response, Router} from "express";
-import {body, header, validationResult} from "express-validator";
+import {Request, Response, Router} from "express";
 import {authorizationMiddleware} from "../middlewares/authorization";
 import {inputValidationMiddleware} from "../middlewares/input-validation-middleware";
 
-import {postsRouter} from "./posts-router";
+import {nameValidation, descriptionValidation, websiteUrlValidation} from "../middlewares/blogs-validations";
 
 export const blogsRouter = Router({})
 
 export let blogs: any[] = []
-
-
-/*{"id": 1,
-    "name": "Anna",
-    "description": "something",
-    "websiteUrl": "string"
-}*/
-
-const nameValidation = body('name')
-    .trim().not().isEmpty().withMessage("The name is empty")
-    .isLength({max:15}).withMessage("The maximum length  is 15")
-
-const descriptionValidation = body('description')
-    .trim().not().isEmpty().withMessage("The description is empty")
-    .isLength({max:500}).withMessage("The maximum length is 500")
-
-const websiteUrlValidation = body('websiteUrl')
-    .isURL().withMessage("A URL is badly formed or contains invalid characters")
-
 
 
 blogsRouter.get('/blogs',
