@@ -66,20 +66,25 @@ postsRouter.post('/posts',
     inputValidationMiddleware,
     (req: Request, res: Response ) => {
 
-        let findBlogID = blogs.find(p => +p.id === +(req.body.blogId) ) // вынести отдельно строку? повторяется!
-        const newPost = {
-            id: (+(new Date())).toString(),
-            title: req.body.title,
-            shortDescription: req.body.shortDescription,
-            content: req.body.content,
-            blogId: req.body.blogId,
-            blogName: findBlogID?.name!
+        let findBlogID = blogs.find(p => +p.id === +(req.body.blogId)) // вынести отдельно строку? повторяется!
+
+        if (findBlogID) {
+            const newPost = {
+                id: (+(new Date())).toString(),
+                title: req.body.title,
+                shortDescription: req.body.shortDescription,
+                content: req.body.content,
+                blogId: req.body.blogId,
+                blogName: findBlogID?.name!
+
+            }
+            posts.push(newPost)
+            res.status(201).send(newPost)
+        } else {
+            return res.send(404)
 
         }
-        posts.push(newPost)
-        res.status(201).send(newPost)
-    }
-)
+    })
 
 
 postsRouter.get('/posts',
@@ -90,17 +95,14 @@ postsRouter.get('/posts',
 
 postsRouter.get('/posts/:id', (req: Request, res: Response ) => {
 
-    let findBlogID = blogs.find(p => +p.id === +(req.body.blogId) )
-
     let findPostID = posts.find(p => +p.id === +req.params.id)
 
-    if (findBlogID) {
         if (findPostID) {
             return res.status(200).send(findPostID)
         } else {
             return res.send(404)
         }
-    }
+
 })
 
 
@@ -117,8 +119,8 @@ postsRouter.put('/posts/:id',
 
         let findUpdatedPost = posts.find(p => +p.id === +req.params.id)
 
-        if (findUpdatedPost) {
-            if (findBlogID) {
+        if (findBlogID) {
+            if (findUpdatedPost) {
                 findUpdatedPost.id = (+req.params.id).toString(),
                     findUpdatedPost.title = req.body.title,
                     findUpdatedPost.shortDescription = req.body.shortDescription,
