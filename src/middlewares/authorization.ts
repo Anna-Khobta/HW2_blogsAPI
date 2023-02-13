@@ -10,7 +10,8 @@ export const authorizationMiddleware = ((req: Request, res:Response, next:NextFu
 
     // parse login and password from headers
 
-    if (!('Basic' === ((req.headers.authorization).split(' ')[0]))) {
+    if (!('Basic' === ((req.headers.authorization).split(' ')[0]))
+        || !(typeof req.headers.authorization === 'string') {
         res.send(401)
     } else {
         const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
