@@ -75,12 +75,12 @@ blogsRouter.put('/blogs/:id',
     inputValidationMiddleware,
     (req: Request, res:Response) => {
 
-        let findBlog = blogs.find(p => p.id === +req.params.id)
+        let findBlog = blogs.find(p => +p.id === +req.params.id)
 
         if (!findBlog) {
             return res.sendStatus(404)
         } else {
-            findBlog.id = +req.params.id,
+            findBlog.id = (+req.params.id).toString(),
                 findBlog.name = req.body.name,
                 findBlog.description = req.body.description,
                 findBlog.websiteUrl = req.body.websiteUrl
