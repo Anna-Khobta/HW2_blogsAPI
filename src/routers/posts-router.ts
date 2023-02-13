@@ -29,9 +29,9 @@ const contentValidation = body('content')
 // 1000
 
 
-
 const idValidation = body('blogId')
     .trim().not().isEmpty().withMessage("The blogId is empty")
+    .isLength({max:18}).withMessage("The maximum length is 18")
 
 
 /*
@@ -128,7 +128,7 @@ postsRouter.put('/posts/:id',
                     findUpdatedPost.blogId = req.body.blogId,
                     findUpdatedPost.blogName = req.body.blogId?.name!
                 posts.push(findUpdatedPost)
-                res.status(201).send(findUpdatedPost)
+                res.sendStatus(204)
             }
 }
         return res.sendStatus(404)
@@ -140,11 +140,8 @@ postsRouter.delete('/posts/:id',
     authorizationMiddleware,
     (req: Request, res: Response ) => {
 
-        let findBlogID = blogs.find(p => +p.id === +(req.body.blogId) )
-
         let findPostID = posts.find(p => +p.id === +req.params.id)
 
-        if (findBlogID) {
             if (findPostID) {
                 for (let i = 0; i < posts.length; i++) {
                     if (+posts[i].id === +req.params.id) {
@@ -154,7 +151,6 @@ postsRouter.delete('/posts/:id',
                     }
                 }
             }
-        }
     res.send(404)
 })
 
