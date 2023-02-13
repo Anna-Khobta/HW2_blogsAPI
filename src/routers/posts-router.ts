@@ -127,10 +127,12 @@ postsRouter.put('/posts/:id',
                     findUpdatedPost.shortDescription = req.body.shortDescription,
                     findUpdatedPost.content = req.body.content,
                     findUpdatedPost.blogId = req.body.blogId,
-                    findUpdatedPost.blogName = req.body.blogId?.name!
-                posts.push(findUpdatedPost)
-                res.sendStatus(204)
+                    findUpdatedPost.blogName = findBlogID?.name!
             }
+                posts.push(findUpdatedPost)
+                // res.status(200).send(findUpdatedPost)
+                res.sendStatus(204)
+            } else {
 }
         return res.sendStatus(404)
         }
