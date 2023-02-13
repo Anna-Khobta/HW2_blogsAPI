@@ -51,7 +51,8 @@ const idContainsValidation = body('blogId')
         let findBlogID = blogs.find(p => p.id === +(req.body.blogId) )
         if (!findBlogID) {
             throw new Error("Error with blogID")
-        }// Indicates the success of this synchronous custom validator
+        }
+        // Indicates the success of this synchronous custom validator
         return true;
     })
 
