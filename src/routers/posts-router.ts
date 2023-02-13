@@ -66,9 +66,9 @@ postsRouter.post('/posts',
     inputValidationMiddleware,
     (req: Request, res: Response ) => {
 
-        let findBlogID = blogs.find(p => p.id === +(req.body.blogId) ) // вынести отдельно строку? повторяется!
+        let findBlogID = blogs.find(p => +p.id === +(req.body.blogId) ) // вынести отдельно строку? повторяется!
         const newPost = {
-            id: +(new Date()),
+            id: (+(new Date())).toString(),
             title: req.body.title,
             shortDescription: req.body.shortDescription,
             content: req.body.content,
@@ -90,7 +90,7 @@ postsRouter.get('/posts',
 
 postsRouter.get('/posts/:id', (req: Request, res: Response ) => {
 
-    let findPostID = posts.find(p => p.id === +req.params.id)
+    let findPostID = posts.find(p => +p.id === +req.params.id)
 
     if (findPostID) {
         return res.status(200).send(findPostID)
@@ -110,13 +110,13 @@ postsRouter.put('/posts/:id',
     inputValidationMiddleware,
     (req: Request, res:Response) => {
 
-        let findBlogID = blogs.find(p => p.id === +(req.body.blogId) )
+        let findBlogID = blogs.find(p => +p.id === +(req.body.blogId) )
 
-        let findUpdatedPost = posts.find(p => p.id === +req.params.id)
+        let findUpdatedPost = posts.find(p => +p.id === +req.params.id)
 
         if (findBlogID) {
 
-        findUpdatedPost.id = +req.params.id,
+        findUpdatedPost.id = (+req.params.id).toString(),
             findUpdatedPost.title = req.body.title,
             findUpdatedPost.shortDescription = req.body.shortDescription,
             findUpdatedPost.content = req.body.content,
@@ -134,7 +134,7 @@ postsRouter.delete('/posts/:id',
     authorizationMiddleware,
     (req: Request, res: Response ) => {
     for (let i = 0; i < posts.length; i++) {
-        if (posts[i].id === +req.params.id) {
+        if (+posts[i].id === +req.params.id) {
             posts.splice(i, 1);
             res.send(204)
             return;
