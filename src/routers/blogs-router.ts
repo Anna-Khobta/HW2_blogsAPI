@@ -57,7 +57,7 @@ blogsRouter.post('/blogs',
 
 blogsRouter.get('/blogs/:id', (req: Request, res: Response ) => {
 
-    let findBlog = blogs.find(p => p.id === +req.params.id)
+    let findBlog = blogs.find(p => +p.id === +req.params.id)
 
     if (findBlog) {
         return res.status(200).send(findBlog)
