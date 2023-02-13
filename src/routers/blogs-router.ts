@@ -25,7 +25,6 @@ const descriptionValidation = body('description')
     .isLength({max:500}).withMessage("The maximum length is 500")
 
 const websiteUrlValidation = body('websiteUrl')
-    .isLength({max: 100}).withMessage("The maximum length is 100")
     .isURL().withMessage("A URL is badly formed or contains invalid characters")
 
 
