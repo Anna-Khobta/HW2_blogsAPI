@@ -14,7 +14,7 @@ export let posts: any[] = []
 
 const titleValidation = body('title')
     .trim().not().isEmpty().withMessage("The title is empty")
-    .isLength({max:10}).withMessage("The maximum length is 30")
+    .isLength({max:30}).withMessage("The maximum length is 30")
 // 30
 
 const shortDescriptionValidation = body('shortDescription')
