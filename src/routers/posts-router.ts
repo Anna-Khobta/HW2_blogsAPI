@@ -90,14 +90,17 @@ postsRouter.get('/posts',
 
 postsRouter.get('/posts/:id', (req: Request, res: Response ) => {
 
+    let findBlogID = blogs.find(p => +p.id === +(req.body.blogId) )
+
     let findPostID = posts.find(p => +p.id === +req.params.id)
 
-    if (findPostID) {
-        return res.status(200).send(findPostID)
-    } else {
-        return res.send(404)
+    if (findBlogID) {
+        if (findPostID) {
+            return res.status(200).send(findPostID)
+        } else {
+            return res.send(404)
+        }
     }
-
 })
 
 
@@ -114,16 +117,17 @@ postsRouter.put('/posts/:id',
 
         let findUpdatedPost = posts.find(p => +p.id === +req.params.id)
 
-        if (findBlogID) {
-
-        findUpdatedPost.id = (+req.params.id).toString(),
-            findUpdatedPost.title = req.body.title,
-            findUpdatedPost.shortDescription = req.body.shortDescription,
-            findUpdatedPost.content = req.body.content,
-            findUpdatedPost.blogId = req.body.blogId,
-            findUpdatedPost.blogName = req.body.blogId?.name!
-        posts.push(findUpdatedPost)
-        res.status(201).send(findUpdatedPost)
+        if (findUpdatedPost) {
+            if (findBlogID) {
+                findUpdatedPost.id = (+req.params.id).toString(),
+                    findUpdatedPost.title = req.body.title,
+                    findUpdatedPost.shortDescription = req.body.shortDescription,
+                    findUpdatedPost.content = req.body.content,
+                    findUpdatedPost.blogId = req.body.blogId,
+                    findUpdatedPost.blogName = req.body.blogId?.name!
+                posts.push(findUpdatedPost)
+                res.status(201).send(findUpdatedPost)
+            }
 }
         return res.sendStatus(404)
         }
@@ -133,13 +137,22 @@ postsRouter.put('/posts/:id',
 postsRouter.delete('/posts/:id',
     authorizationMiddleware,
     (req: Request, res: Response ) => {
-    for (let i = 0; i < posts.length; i++) {
-        if (+posts[i].id === +req.params.id) {
-            posts.splice(i, 1);
-            res.send(204)
-            return;
+
+        let findBlogID = blogs.find(p => +p.id === +(req.body.blogId) )
+
+        let findPostID = posts.find(p => +p.id === +req.params.id)
+
+        if (findBlogID) {
+            if (findPostID) {
+                for (let i = 0; i < posts.length; i++) {
+                    if (+posts[i].id === +req.params.id) {
+                        posts.splice(i, 1);
+                        res.send(204)
+                        return;
+                    }
+                }
+            }
         }
-    }
     res.send(404)
 })
 
